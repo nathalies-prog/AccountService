@@ -1,4 +1,4 @@
-import { serve } from "@hono/node-server/.";
+import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { StorageRepository } from "../repositories/Storage-Repository";
 import { DataSource } from "../datasources/DataSource";
@@ -14,11 +14,12 @@ accountAdapter.post("/create", async (c) => {
   return c.json({ data: newAccount }, 201);
 });
 
-accountAdapter.get("/:accountNumber", async (c) => {
+accountAdapter.get("/account/:accountNumber", async (c) => {
   const { accountNumber } = c.req.param();
   const account = await accountInteractor.get(parseInt(accountNumber, 10));
   return c.json({ data: account }, 200);
 });
+
 
 accountAdapter.get("/accounts", async (c) => {
   const accounts = await accountInteractor.all();

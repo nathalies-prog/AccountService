@@ -4,7 +4,13 @@ export function getPool() {
   if (pool) {
     return pool;
   }
-  pool = new pg.Pool();
+  pool = new pg.Pool({
+    port:5432,
+    host: "localhost",
+    user: "admin",
+    password: "secret",
+    database: "postgres",
+  });
 
   return pool;
 }
