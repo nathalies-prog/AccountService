@@ -15,7 +15,7 @@ export class DataSource implements StorageRepository {
   async getAccount(accountNumber: number): Promise<Account | null> {
     try {
       const res = await getPool().query(
-        `SELECT * FROM account WHERE accountNumber=$1`,
+        `SELECT * FROM account WHERE "accountNumber"=$1`,
         [accountNumber]
       );
       return res.rows[0];
@@ -33,7 +33,7 @@ export class DataSource implements StorageRepository {
   ): Promise<Account | null> {
     try {
       const res = await getPool().query(
-        `INSERT into account (firstName,lastName) VALUES($1,$2) RETURNING * `,
+        `INSERT into account ("firstName","lastName") VALUES($1,$2) RETURNING * `,
         [firstName, lastName]
       );
       return res.rows[0];
