@@ -13,13 +13,33 @@ export class DataSource implements StorageRepository {
     }
   }
   async getAccount(accountNumber: number): Promise<Account | null> {
-      try{
-        const res = await getPool().query(`SELECT * FROM account WHERE accountNumber=$1`,[accountNumber]);
-        return res.rows[0];
-      }
-      catch(error){
-        console.error(`Fehler beim Abrufen des abgefragten ${accountNumber} Accounts`,error);
-        return null;
-      }
+    try {
+      const res = await getPool().query(
+        `SELECT * FROM account WHERE accountNumber=$1`,
+        [accountNumber]
+      );
+      return res.rows[0];
+    } catch (error) {
+      console.error(
+        `Fehler beim Abrufen des abgefragten ${accountNumber} Accounts`,
+        error
+      );
+      return null;
+    }
+  }
+  async createAccount(
+    firstName: string,
+    lastName: string
+  ): Promise<Account | null> {
+    try {
+      const res = await getPool().query(
+        `INSERT into account (firstName,lastName) VALUES($1,$2) RETURNING * `,
+        [firstName, lastName]
+      );
+      return res.rows[0];
+    } catch (error) {
+      console.error("Es konnt kein Account erstellt werden..", error);
+      return null;
+    }
   }
 }
